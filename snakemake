@@ -1,0 +1,23 @@
+rule all:
+    input:
+        "journal.txt"
+
+rule audio_to_text:
+    input:
+        audio_file = "D:/RECORDER/FOLDER_A/{file}"
+    output:
+        text_file = "C:/Users/NM/{file}.txt"
+    shell:
+        """
+        python audio_to_text.py {input.audio_file} {output.text_file}
+        """
+
+rule journal_compile:
+    input:
+        expand("C:/Users/NM/{file}.txt", file=glob_wildcards("C:/Users/NM/{file}.txt"))
+    output:
+        "journal.txt"
+    shell:
+        """
+        python journal_compile.py {output}
+        """
